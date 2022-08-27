@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+const fs = require("fs");
+const compiler = require("../dist/");
+const arg = require("arg");
+
+const args = arg({
+  "--input": [String],
+  "--output": String,
+  "--fift": Boolean,
+  "--optimizations": Number,
+});
+
+if (!args["--output"] || args["--input"].length === 0) {
+  console.log(
+    "USAGE: tonc [--fift] --input <input_file> --output <output_file>"
+  );
+  return;
+}
+
+let source = args["--input"].map((v) => fs.readFileSync(v, "utf-8")).join("\n");
+(async () => {
+  try {
+    if (args["--fift"]) {
+      let res = await compiler.compileFift(source);
+      await fs.promises.writeFile(args["--output"], res, "utf-8");
+    } else {
+      let res = await compiler.compileFunc(source);
+      await fs.promises.writeFile(args["--output"], res);
+    }
+  } catch (e) {
+    process.exit(1);
+  }
+})();

@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+
+// stdlib
+const path = require("path");
+const os = require("os");
+process.env["FIFTPATH"] = path.resolve(__dirname, "..", "fiftlib");
+
+const child = require("child_process");
+const fiftPath = path.resolve(__dirname, "exec", "fift");
+const [, , ...argv] = process.argv;
+try {
+  child.execSync(fiftPath + " " + argv.join(" "), {
+    stdio: "inherit",
+  });
+} catch (e) {
+  process.exit(1);
+}
