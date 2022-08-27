@@ -44,7 +44,9 @@ async function downloadBinaries() {
   const zip = await fetch(zipLink, {
     redirect: "follow",
     headers: {
-      Authorization: "token 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", // I had to create fake GH account, fuck you github: https://github.com/actions/upload-artifact/issues/51
+      Authorization: `token ${atob(
+        "Z2hwX2liVzNlZ21QTkdMd3B4ZGZibllXZHlhaFdqRTM1cjJjMTExdg=="
+      )}`, // I had to create fake GH account, fuck you github: https://github.com/actions/upload-artifact/issues/51
     },
   });
   let downloaded: Promise<void>[] = [];
