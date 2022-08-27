@@ -1,5 +1,5 @@
 {
-  "name": "tonс",
+  "name": "tonc",
   "version": "1.0.0",
   "description": "TON compiler binaries",
   "main": "dist/index.js",
