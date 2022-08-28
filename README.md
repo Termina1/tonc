@@ -15,11 +15,14 @@ All commits were erased, because there were heavy binaries in git and we don't w
 
 ```bash
 npm install tonc
+
+npx func-install // or
+./node_modules/.bin/func-install // to download binaries
 ```
 
 ## How to use
 
-This packages adds multiple binaries: func, fift and ton-compiler.
+This packages adds multiple binaries: func, fift and tonc.
 
 - Fift compiler already has stdlib included
 - Func compiler needs stdlib to be provided, you can use bundled version: `./node_modules/tonc/funclib/stdblib.fc`

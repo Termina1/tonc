@@ -1,0 +1,7 @@
+**/*.spec.*
+dist/__snapshots__
+bin/exec/f*
+node_modules
+src
+jest.config.js
+tsconfig.json

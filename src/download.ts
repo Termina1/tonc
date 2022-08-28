@@ -20,7 +20,7 @@ function selectWorkflow(): [string, string] {
   }
 }
 
-async function downloadBinaries() {
+export async function downloadBinaries() {
   console.log("Downloading TON binaries...");
   const [workflow, aftifactName] = selectWorkflow();
   const run: any = await fetch(
@@ -87,5 +87,3 @@ async function downloadBinaries() {
     console.log("Error downloading TON binaries: " + err.message)
   );
 }
-
-downloadBinaries();

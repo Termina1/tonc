@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+const download = require("../dist/download");
+download.downloadBinaries();
