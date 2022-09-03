@@ -20,7 +20,7 @@
     "func-install": "./bin/func-install"
   },
   "scripts": {
-    "release": "rm -fr dist && tsc -p ./tsconfig.json && jest && npm publish"
+    "release": "rm -fr dist && tsc -p ./tsconfig.json && jest src/*.spec.ts && npm publish"
   },
   "dependencies": {
     "arg": "^5.0.1",
