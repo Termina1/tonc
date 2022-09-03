@@ -48,8 +48,8 @@ build-ton: build-openssl ${TON_DIR}
 		-DCMAKE_BUILD_TYPE=Release ..
 	cd ${TON_BUILD_DIR} && ninja fift func
 
-.PHONY: build-ton-em
-build-ton-em: build-openssl-em ${TON_DIR}
+.PHONY: only-build-ton-em
+only-build-ton-em:
 	rm -rf ${TON_DIR}/build
 	mkdir ${TON_BUILD_DIR} || true
 	cd ${TON_DIR} && git checkout .
@@ -62,11 +62,20 @@ build-ton-em: build-openssl-em ${TON_DIR}
 		-DCMAKE_BUILD_TYPE=Release .. || exit 1
 	cd ${TON_BUILD_DIR} && emmake ninja fift func
 
+.PHONY: only-build-ton-em
+build-ton-em: build-openssl-em ${TON_DIR} only-build-ton-em
+
+.PHONY: move-files
+move-files:
+	cp ${TON_BUILD_DIR}/crypto/fift.* ./bin/exec
+	cp ${TON_BUILD_DIR}/crypto/func.* ./bin/exec
+
+.PHONY: compile-only-ton
+compile-only-ton: only-build-ton-em move-files
+
 # We first build binaries normally for cmake build system to generate
 # all the auto-generated C-files. For some reason, they are not generated
 # during emscripten work. And only after that we rebuild everything with emscripten
 # applying some patches to TON codebase for compilatoin to succeed.
 .PHONY: compile
-compile: build-ton build-ton-em
-	cp ${TON_BUILD_DIR}/crypto/fift.* ./bin/exec
-	cp ${TON_BUILD_DIR}/crypto/func.* ./bin/exec
+compile: build-ton build-ton-em move-files

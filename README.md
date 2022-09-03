@@ -44,6 +44,16 @@ console.log(compiled.fift); // Compiled Fift assembler
 console.log(compiled.cell.toString("hex")); // Compiled cell
 ```
 
+## Developments
+
+Currently building WASM works only on Linux, though it should be possible on OS X too.
+
+1. Install emscripten as explained in https://emscripten.org/docs/getting_started/downloads.html
+2. Make sure you have installed git, curl, and build-tools (clang, cmake, etc)
+3. Run `make compile`, this will bootstrap all needed file in `./build/` directory, compile binaries to WASM initially and copy those WASM files to `./bin/exec`
+   It takes some time, so be patient
+4. After that you can run `compile-only-ton`, which will only recompile TON to wasm
+
 # License
 
 MIT
