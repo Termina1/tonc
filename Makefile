@@ -62,6 +62,10 @@ build-ton-em: build-openssl-em ${TON_DIR}
 		-DCMAKE_BUILD_TYPE=Release .. || exit 1
 	cd ${TON_BUILD_DIR} && emmake ninja fift func
 
+# We first build binaries normally for cmake build system to generate
+# all the auto-generated C-files. For some reason, they are not generated
+# during emscripten work. And only after that we rebuild everything with emscripten
+# applying some patches to TON codebase for compilatoin to succeed.
 .PHONY: compile
 compile: build-ton build-ton-em
 	cp ${TON_BUILD_DIR}/crypto/fift.* ./bin/exec

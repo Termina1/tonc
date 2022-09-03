@@ -1,3 +1,4 @@
+# kudos to https://github.com/tdlib/td for example on how to build openssl
 cd $1
 emconfigure ./Configure linux-generic32 no-shared no-threads no-dso no-engine no-unit-test no-ui || exit 1
 sed -i.bak 's/CROSS_COMPILE=.*/CROSS_COMPILE=/g' Makefile || exit 1
