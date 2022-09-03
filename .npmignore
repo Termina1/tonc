@@ -8,3 +8,4 @@ jest.config.js
 tsconfig.json
 ton_wasm.patch
 Makefile
+emsdk-cache/
