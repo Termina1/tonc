@@ -1,14 +1,11 @@
 #!/usr/bin/env node
-
-// Execute
 const path = require("path");
-const child = require("child_process");
-const fiftPath = path.resolve(__dirname, "exec", "func");
-const [, , ...argv] = process.argv;
-try {
-  child.execSync(fiftPath + " " + argv.join(" "), {
-    stdio: "inherit",
-  });
-} catch (e) {
-  process.exit(1);
-}
+const fiftc = require("./exec/func");
+
+fiftc().then((module) => {
+  try {
+    module.callMain(process.argv.slice(2));
+  } catch (e) {
+    console.log(e);
+  }
+});

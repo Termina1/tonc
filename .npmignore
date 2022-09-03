@@ -1,7 +1,10 @@
 **/*.spec.*
+build_tools/
+build_dist/
 dist/__snapshots__
-bin/exec/f*
 node_modules
 src
 jest.config.js
 tsconfig.json
+ton_wasm.patch
+Makefile

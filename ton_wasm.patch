@@ -1,0 +1,97 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 44dbae8..0f88feb 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -242,10 +242,10 @@ elseif (CLANG OR GCC)
+     set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -fvisibility=hidden -Wl,-dead_strip,-x,-S")
+   else()
+     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffunction-sections -fdata-sections")
+-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--gc-sections -Wl,--exclude-libs,ALL")
++    # set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--gc-sections -Wl,--exclude-libs,ALL")
+     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections")
+     if (NOT TON_USE_ASAN AND NOT TON_USE_TSAN AND NOT MEMPROF)
+-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--exclude-libs,ALL")
++      # set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--exclude-libs,ALL")
+     endif()
+   endif()
+ endif()
+@@ -373,7 +373,7 @@ add_subdirectory(crypto)
+ add_subdirectory(lite-client)
+
+ #BEGIN tonlib
+-add_subdirectory(tonlib)
++# add_subdirectory(tonlib)
+ #END tonlib
+
+ #BEGIN internal
+@@ -441,15 +441,15 @@ add_executable(test-net test/test-td-main.cpp ${NET_TEST_SOURCE})
+ target_link_libraries(test-net PRIVATE tdnet tdutils ${CMAKE_THREAD_LIBS_INIT})
+
+ #BEGIN tonlib
+-add_executable(test-tonlib ${TONLIB_ONLINE_TEST_SOURCE})
+-target_link_libraries(test-tonlib tdutils tdactor adnllite tl_api ton_crypto ton_block tl_tonlib_api tonlib)
++# add_executable(test-tonlib ${TONLIB_ONLINE_TEST_SOURCE})
++# target_link_libraries(test-tonlib tdutils tdactor adnllite tl_api ton_crypto ton_block tl_tonlib_api tonlib)
+
+-add_executable(test-tonlib-offline test/test-td-main.cpp ${TONLIB_OFFLINE_TEST_SOURCE})
+-target_link_libraries(test-tonlib-offline tdutils tdactor adnllite tl_api ton_crypto ton_block fift-lib tl_tonlib_api tonlib)
++# add_executable(test-tonlib-offline test/test-td-main.cpp ${TONLIB_OFFLINE_TEST_SOURCE})
++# target_link_libraries(test-tonlib-offline tdutils tdactor adnllite tl_api ton_crypto ton_block fift-lib tl_tonlib_api tonlib)
+
+-if (NOT CMAKE_CROSSCOMPILING)
+-  add_dependencies(test-tonlib-offline gen_fif)
+-endif()
++# if (NOT CMAKE_CROSSCOMPILING)
++#   add_dependencies(test-tonlib-offline gen_fif)
++# endif()
+ #END tonlib
+
+ #BEGIN internal
+diff --git a/crypto/CMakeLists.txt b/crypto/CMakeLists.txt
+index 58b9808..e8bd724 100644
+--- a/crypto/CMakeLists.txt
++++ b/crypto/CMakeLists.txt
+@@ -266,6 +266,8 @@ set(BIGINT_TEST_SOURCE
+   PARENT_SCOPE
+ )
+
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -sNODERAWFS=1 -sMODULARIZE -sEXPORT_NAME=TonModule -sINVOKE_RUN=0 -sDISABLE_EXCEPTION_CATCHING=0 -sEXPORTED_RUNTIME_METHODS=['callMain','ENV']")
++
+
+ add_library(ton_crypto STATIC ${TON_CRYPTO_SOURCE})
+ target_include_directories(ton_crypto PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+diff --git a/crypto/vm/large-boc-serializer.cpp b/crypto/vm/large-boc-serializer.cpp
+index 765bd9a..97f1181 100644
+--- a/crypto/vm/large-boc-serializer.cpp
++++ b/crypto/vm/large-boc-serializer.cpp
+@@ -313,7 +313,7 @@ td::Status LargeBocSerializer::serialize(td::FileFd& fd, int mode) {
+     return td::Status::Error("bag of cells is too large");
+   }
+
+-  boc_writers::FileWriter writer{fd, info.total_size};
++  boc_writers::FileWriter writer(fd, info.total_size);
+   auto store_ref = [&](unsigned long long value) {
+     writer.store_uint(value, info.ref_byte_size);
+   };
+diff --git a/tdutils/td/utils/port/config.h b/tdutils/td/utils/port/config.h
+index 2bd671b..e91da0e 100644
+--- a/tdutils/td/utils/port/config.h
++++ b/tdutils/td/utils/port/config.h
+@@ -39,7 +39,7 @@
+   #define TD_EVENTFD_BSD 1
+ #elif TD_EMSCRIPTEN
+   #define TD_POLL_POLL 1
+-  #define TD_EVENTFD_UNSUPPORTED 1
++  #define TD_EVENTFD_LINUX 1
+ #elif TD_DARWIN
+   #define TD_POLL_KQUEUE 1
+   #define TD_EVENTFD_BSD 1
+@@ -51,7 +51,7 @@
+ #endif
+
+ #if TD_EMSCRIPTEN
+-  #define TD_THREAD_UNSUPPORTED 1
++  #define TD_THREAD_PTHREAD 1
+ #elif TD_TIZEN || TD_LINUX || TD_DARWIN
+   #define TD_THREAD_PTHREAD 1
+ #else

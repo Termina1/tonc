@@ -1,3 +1,5 @@
 dist
 node_modules
-bin/exec/f*
+build/
+build_dist/
+bin/exec/

@@ -1,6 +1,14 @@
 {
   "name": "tonc",
-  "version": "1.3.5",
+  "version": "2.0.1",
+  "author": {
+    "name": "Termina1",
+    "url": "https://github.com/Termina1"
+  },
+  "contributors": [{
+    "name": "Steve Korshakov",
+    "email": "steve@korshakov.com"
+  }],
   "description": "TON compiler binaries",
   "main": "dist/index.js",
   "repository": "https://github.com/Termina1/tonc.git",

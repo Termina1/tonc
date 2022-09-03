@@ -1,13 +1,13 @@
 # TONC (TON Compiler)
 
-Packaged Func compiler for TON smart contracts.
+Tired of trying to find TON binaries compiled for your system, we've got you covered.
 
 This is a heavy rewrite of [ton-compiler](https://github.com/ton-foundation/ton-compiler) package, so kudos to its authors.
 All commits were erased, because there were heavy binaries in git and we don't want them to stuck in history.
 
 ## Features
 
-- 🚀 Automatically downloads binaries from last release for you OS
+- 🚀 Binaries (fift and func) are compiled to WASM, runs anywhere without any hustle
 - 🍰 Programmatic and CLI interfaces
 - 💸 Ready to use in unit testing
 
@@ -15,9 +15,6 @@ All commits were erased, because there were heavy binaries in git and we don't w
 
 ```bash
 npm install tonc
-
-npx func-install // or
-./node_modules/.bin/func-install // to download binaries
 ```
 
 ## How to use

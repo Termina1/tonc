@@ -4,19 +4,16 @@ import * as path from "path";
 import * as child from "child_process";
 
 export function executeFunc(args: string[]) {
-  const fiftPath = path.resolve(__dirname, "..", "bin", "exec", "func");
+  const fiftPath = path.resolve(__dirname, "..", "bin", "func");
   child.execSync(fiftPath + " " + args.join(" "), {
     stdio: "inherit",
   });
 }
 
 export function executeFift(args: string[]) {
-  const fiftPath = path.resolve(__dirname, "..", "bin", "exec", "fift");
+  const fiftPath = path.resolve(__dirname, "..", "bin", "fift");
   child.execSync(fiftPath + " " + args.join(" "), {
     stdio: "inherit",
-    env: {
-      FIFTPATH: path.resolve(__dirname, "..", "fiftlib"),
-    },
   });
 }
 
