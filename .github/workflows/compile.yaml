@@ -1,5 +1,7 @@
 name: Compile binaries to WASM
-on: workflow_dispatch
+on:
+  release:
+    types: [published]
 jobs:
   compile-wasm:
     runs-on: ubuntu-latest
@@ -8,7 +10,7 @@ jobs:
       - uses: mymindstorm/setup-emsdk@v11
         with:
           version: 3.1.20
-          actions-cache-folder: "emsdk-cache"
+          actions-cache-folder: "/emsdk-cache"
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@master
         with:
@@ -23,4 +25,4 @@ jobs:
       - name: "Publish package"
         run: npm i && npm run release
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
